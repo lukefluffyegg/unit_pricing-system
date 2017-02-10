@@ -44,3 +44,5 @@
      register_activation_hook(__FILE__, 'unit_pricing_system_activate');
  }
 
+ // this is a test
+
