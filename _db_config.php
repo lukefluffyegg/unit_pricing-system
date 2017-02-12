@@ -1,6 +1,6 @@
 <?php
 /* Database config for plugin */
- include('../wp-config.php');
+ include('../../wp-config.php');
 
 // Database Variables
  $username = DB_USER;

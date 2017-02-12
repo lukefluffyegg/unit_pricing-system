@@ -29,15 +29,14 @@
         include('_db_config.php');
 
         mysqli_query($db, 
-            "CREATE TABLE IF NOT EXISTS `unit_pricing_system`(
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `unit_option_name` VARCHAR NOT NULL,
-                `min_mm` int(11) NOT NULL,
-                `max_mm` mediumint(9) NOT NULL,
-                `price_per_mm` decimal(10,2) NOT NULL,
-                 PRIMARY_KEY(`id`)
-            ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1
-        ");
+            "CREATE TABLE IF NOT EXISTS `unit_pricing_system` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `unit_option_name` VARCHAR NOT NULL,
+              `unit_min` int(11) NOT NULL,
+              `unit_max` int(11) NOT NULL,
+              `price_per_unit` decimal(10,2) NOT NULL,
+               PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1");
     }
 
      // Run the database query
