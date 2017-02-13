@@ -29,22 +29,44 @@
         include('_db_config.php');
 
         mysqli_query($db, 
-            "CREATE TABLE IF NOT EXISTS `unit_pricing_system`(
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `unit_option_name` VARCHAR NOT NULL,
-                `min_mm` int(11) NOT NULL,
-                `max_mm` mediumint(9) NOT NULL,
-                `price_per_mm` decimal(10,2) NOT NULL,
-                 PRIMARY_KEY(`id`)
-            ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1
-        ");
+            "CREATE TABLE IF NOT EXISTS `unit_pricing_system` (
+              `id` int(11) PRIMARY KEY,
+              `product_id` int(11) NOT NULL,
+              `product_name` VARCHAR(255) NOT NULL,
+              `unit_min` int(11) NOT NULL,
+              `unit_max` int(11) NOT NULL,
+              `price_per_unit` decimal(10,2)
+        ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1");
     }
 
-     // Run the database query
+     // Run the activation
      register_activation_hook(__FILE__, 'unit_pricing_system_activate');
+
+     // Run the decativation hook
+     register_deactivation_hook(__FILE__, 'unit_pricing_system_deactivate');
+
+     // Include all files 
+     function include_pricing_system() {
+        include('pricing-system.php');
+     }
+
+     function include_add_product() {
+        include('pricing-add.php');
+     }
+
+     function include_edit_product() {
+        include('pricing-edit.php');
+     }
+
+     function include_delete_product() {
+        include('pricing-delete.php');
+     }
+
+ function add_menu() {
+  add_menu_page('Unit Price System', 'Unit Price System',4, 'pricing-system.php', 'include_pricing_system', 
+      plugins_url('images/price.png', __FILE__), 690);
  }
 
- // this is a test
+  add_action('admin_menu', 'add_menu');
 
- //another test
-
+}
