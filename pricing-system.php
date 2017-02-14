@@ -1,11 +1,25 @@
 <?php
 
 // Include Database
+<<<<<<< HEAD
 include('_db_config.php');
 
 $action = $_GET['action'];
 
 $id = $_GET['id'];
+=======
+require_once('_db_config.php');
+
+// Same as error_reporting(E_ALL);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$action = $_GET['action'];
+
+if(isset($_GET['id'])) {
+  $id = $_GET['id'];
+}
+>>>>>>> 1f92f9897e695cfefd6ca3a8a88a14039aff93bb
 
 if(!isset($action) && !isset($id)) { ?>
     <div class="container">
@@ -36,6 +50,7 @@ if(!isset($action) && !isset($id)) { ?>
             <?php endwhile; ?>
         </tbody>
     </table>
+<<<<<<< HEAD
 
     <?php 
         mysqli_close($db);
@@ -105,6 +120,77 @@ exit; } else if(isset($action) && $action == 'delete') {
 </script>
 
 <?php exit; } ?>
+=======
+    <?php 
+     mysqli_close($db); 
+
+    }
+
+    else if(isset($action) && $action == 'edit') {
+      
+      $result = mysqli_query($db,"SELECT * FROM `unit_pricing_system` WHERE id=$id LIMIT 1");
+
+      $row = mysqli_fetch_array($result);
+
+      extract($row);
+
+      $title = "Edit Product - " . $product_name;
+
+      mysqli_close($db);
+    }
+
+    else if(isset($action) && $action == 'add') {
+      $title = "Add Product";
+
+    $arugements = array(
+      'post_type' => 'product', 
+      'posts_per_page' => 5,
+      'order' => 'ASC',
+    );
+
+    $products = new WP_Query($arugements);
+
+    }
+
+    else if(isset($action) && $action == 'update') {
+      $unit_min = $_POST['unit_min'];
+      $unit_max = $_POST['unit_max'];
+      $price_per_unit = $_POST['price_per_unit'];
+
+      mysqli_query($db,"UPDATE `unit_pricing_system` SET unit_min='$unit_min',unit_max='$unit_max',price_per_unit='$price_per_unit' WHERE id=$id");
+    ?>
+
+      <script type="text/javascript">
+          
+      </script>
+
+    <?php
+    exit;
+    
+    }
+
+    else if(isset($action) && $action == 'create') {
+      $product_id = $_POST['product_id'];
+      $product_name = $_POST['product_name'];
+      $unit_min = $_POST['unit_min'];
+      $unit_max = $_POST['unit_max'];
+      $price_per_unit = $_POST['price_per_unit'];
+
+      $link = mysqli_query($db,"INSERT INTO `unit_pricing_system` (`id`,`product_id`,`product_name`,`unit_min`,`unit_max`,`price_per_unit`) VALUES(NULL,'$product_id','$product_name','$unit_min','$unit_max','$price_per_unit')");
+
+      ?>
+    <script type="text/javascript">
+      
+    </script>
+ 
+    <? exit; }
+
+    else if(isset($action) && $action == 'delete') {
+      mysqli_query($db,"DELETE FROM `unit_pricing_system` WHERE id=$id");
+    }
+
+   ?>
+>>>>>>> 1f92f9897e695cfefd6ca3a8a88a14039aff93bb
 
 <style type="text/css">
     
@@ -285,20 +371,65 @@ padding:15px 0;
 </style>
 
 <div class="wrap">
+<<<<<<< HEAD
         <h2><?php echo $title; ?></h2>
+=======
+        <h2>
+        <?php 
+           if(isset($title)):
+              echo $title;
+            endif
+         ?>
+         </h2>
+>>>>>>> 1f92f9897e695cfefd6ca3a8a88a14039aff93bb
         <br clear="clear">
         <hr />
 
 <?php if(isset($action) && $action == 'edit') { ?>
+<<<<<<< HEAD
         <form method="post" action="">
             
+=======
+        <form method="post" action="admin.php?page=pricing-system.php&action=update&id=<?=$id?>">
+            <label>Product Unit Min</label>
+            <input type="text" name="unit_min" value="<?php echo $row['unit_min']; ?>">
+            <br class="clear">
+
+            <label>Product Unit Max</label>
+            <input type="text" name="unit_max" value="<?php echo $row['unit_max']; ?>">
+            <br class="clear">
+
+            <label>Price Per Unit</label>
+            <input type="text" name="price_per_unit" value="<?php echo $row['price_per_unit']; ?>">
+            <br class="clear">
+
+            <button type="submit">Update</button>
+
+>>>>>>> 1f92f9897e695cfefd6ca3a8a88a14039aff93bb
         </form>
 <?php } ?>
 
 <?php if(isset($action) && $action == 'add') { ?>
+<<<<<<< HEAD
     <form method="post" action="admin.php?page=pricing-system.php&action=create">
         <label>Product Name</label>
         <input type="text" name="product_name">
+=======
+
+    <form method="post" action="admin.php?page=pricing-system.php&action=create">
+       
+        <?php $unit_pricing_unit = mysqli_query($db, "SELECT * FROM `unit_pricing_system`"); ?>
+        <label>Product Name</label>
+          <select name="product_name" id="product_option">
+            <option>Select a Product</option>
+          <?php while ($products->have_posts() ) : $products->the_post(); global $product; ?> ?>
+            <option data-id="<?php echo $products->post->ID; ?>" value="<?php the_title(); ?>"><?php the_title(); ?></option>
+          <?php endwhile; ?>
+          </select>
+
+        <input type="hidden" name="product_id" id="product_id"  value="">
+
+>>>>>>> 1f92f9897e695cfefd6ca3a8a88a14039aff93bb
         <br class="clear">
 
         <label>Product Unit Min</label>
@@ -313,9 +444,31 @@ padding:15px 0;
         <input type="text" name="price_per_unit">
         <br class="clear">
 
+<<<<<<< HEAD
         <input type="hidden" name="product_id" value="10">
 
         <button type="submit">Add</button>
     </form>
 <?php } ?>
 </div>
+=======
+        <button type="submit">Add</button>
+
+    </form>
+<?php } ?>
+</div>
+
+<script type="text/javascript">
+  jQuery(function() {
+
+    var productIDtest = document.getElementById("product_id");
+
+    jQuery('#product_option').change(function(e) {
+      productIDtest.value = '';
+      var productId = jQuery(this).find("option:selected").data('id');
+      document.getElementById("product_id").value += productId;
+    });
+
+  });
+</script>
+>>>>>>> 1f92f9897e695cfefd6ca3a8a88a14039aff93bb
